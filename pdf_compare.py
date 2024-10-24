@@ -2,8 +2,8 @@
 
 import argparse
 from comparators import metadata_comparator
-from comparators import text_comparator  # Если он у вас есть
-from comparators import image_hash_comparator  # Новый модуль
+from comparators import text_comparator
+from comparators import image_hash_comparator  # Если вы добавили этот модуль
 
 def main():
     parser = argparse.ArgumentParser(description="Сравнение PDF-документов на оригинальность")
@@ -27,11 +27,12 @@ def main():
             print("Метаданные совпадают.")
 
     if args.text:
-        is_equal = text_comparator.compare_text(args.file1, args.file2)
+        is_equal, differences = text_comparator.compare_text(args.file1, args.file2)
         if is_equal:
             print("Текстовое содержимое совпадает.")
         else:
-            print("Текстовое содержимое различается.")
+            print("Текстовое содержимое различается. Различия:")
+            print(differences)
 
     if args.images:
         differences = image_hash_comparator.compare_image_hashes(args.file1, args.file2)
