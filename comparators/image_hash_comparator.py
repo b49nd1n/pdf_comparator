@@ -33,6 +33,13 @@ def compare_image_hashes(file1, file2):
     hashes1 = compute_image_hashes(images1)
     hashes2 = compute_image_hashes(images2)
 
+    total_images = len(hashes1)
+    if total_images == 0:
+        similarity = 100.0  # Нет изображений для сравнения
+        differences = []
+        return similarity, differences
+
+    matching_images = 0
     differences = []
 
     for idx, hash1 in enumerate(hashes1):
@@ -40,8 +47,11 @@ def compare_image_hashes(file1, file2):
         for hash2 in hashes2:
             if hash1 - hash2 <= 5:
                 found_match = True
+                matching_images += 1
                 break
         if not found_match:
             differences.append((idx, hash1))
 
-    return differences
+    similarity = (matching_images / total_images) * 100
+
+    return similarity, differences

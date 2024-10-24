@@ -15,11 +15,12 @@ def extract_text(file_path):
 def compare_text(file1, file2):
     text1 = extract_text(file1)
     text2 = extract_text(file2)
-    # print(text1)
-    # print(text2)
     
+    sm = difflib.SequenceMatcher(None, text1, text2)
+    similarity = sm.ratio() * 100  # Процентное значение
+
     if text1 == text2:
-        return True, None
+        differences = None
     else:
         diff = difflib.unified_diff(
             text1.splitlines(keepends=True),
@@ -29,4 +30,4 @@ def compare_text(file1, file2):
             lineterm=''
         )
         differences = ''.join(diff)
-        return False, differences
+    return similarity, differences
